@@ -6,8 +6,11 @@
 </template>
 
 <script>
+import Vue from 'vue';
+import Button from './components/button-simple';
 import { store } from './vuex/store';
 
+Vue.component(Button.name, Button);
 export default {
   name: 'App',
   store,
