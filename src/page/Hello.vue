@@ -1,13 +1,13 @@
 <template>
   <div class="hello">
-    <h1>Welcome to Hanu Vue Template</h1>
+    <h1>Welcome to Soojungee Vue Template</h1>
     <h4>vuex store</h4>
     <h3 v-html="$store.getters.getCount"></h3>
     <div>
       <span v-on:click="increment" style="cursor: pointer">[ INCREMENT ]</span>
       <span v-on:click="decrement" style="cursor: pointer">[ DECREMENT ]</span>
     </div>
-    <router-link to="/test" >누르면 테스트 페이지로 간다. </router-link>
+    <router-link class="test-link" to="/test" >누르면 이수정 component test 페이지로 간다! </router-link>
     <h2>Essential Links</h2>
     <ul>
       <li>
@@ -120,5 +120,11 @@ li {
 
 a {
   color: #42b983;
+}
+
+.test-link {
+  padding: 8px;
+  font-size: 20px;
+  color: #00b0ff;
 }
 </style>
