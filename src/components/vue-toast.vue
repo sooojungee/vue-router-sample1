@@ -16,34 +16,32 @@ export default {
   name: 'vue-toast',
   /**
    * @param {Object} options
-   * @param {String} options.type
    * @param {String} options.message
-   * @param {String} options.theme
    */
   methods: {
-    success(message) {
-      const options = {
+    success(options) {
+      const result = {
         type: 'success',
-        text: message,
+        text: options.message,
         theme: 'toast-success'
       };
-      this.add(options);
+      this.add(result);
     },
-    info(message) {
-      const options = {
+    info(options) {
+      const result = {
         type: 'info',
-        text: message,
+        text: options.message,
         theme: 'toast-info'
       };
-      this.add(options);
+      this.add(result);
     },
-    warning(message) {
-      const options = {
+    warning(options) {
+      const result = {
         type: 'warning',
-        text: message,
+        text: options.message,
         theme: 'toast-warning'
       };
-      this.add(options);
+      this.add(result);
     },
     add(options) {
       if (_.isNil(options)) {

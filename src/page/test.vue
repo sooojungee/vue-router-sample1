@@ -42,13 +42,16 @@ export default {
       this.$loading.closeProgress();
     },
     addSuccessToast() {
-      this.$toast.success(this.toastMessage);
+      const options = { message: this.toastMessage };
+      this.$toast.success(options);
     },
     addInfoToast() {
-      this.$toast.info(this.toastMessage);
+      const options = { message: this.toastMessage };
+      this.$toast.info(options);
     },
     addWarningToast() {
-      this.$toast.warning(this.toastMessage);
+      const options = { message: this.toastMessage };
+      this.$toast.warning(options);
     },
     dialogOn() {
       const options = {

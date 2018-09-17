@@ -32,7 +32,6 @@ export default {
     },
     async searchTerm() {
       const baseURI = 'http://127.0.0.1:4000/crawling';
-      console.log(encodeURIComponent(this.siteUrl));
       const url = await this.$http.get(`${baseURI}/${encodeURIComponent(this.siteUrl)}`);
       this.post = url.data;
     }
