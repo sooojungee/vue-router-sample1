@@ -7,7 +7,8 @@
       <span v-on:click="increment" style="cursor: pointer">[ INCREMENT ]</span>
       <span v-on:click="decrement" style="cursor: pointer">[ DECREMENT ]</span>
     </div>
-    <router-link class="test-link" to="/test" >누르면 이수정 component test 페이지로 간다! </router-link>
+    <router-link class="test-link" to="/test" >누르면 이수정 component test 페이지로! </router-link>
+    <router-link class="test-link" to="/crawling" >누르면 이수정 crawling test 페이지로! </router-link>
     <h2>Essential Links</h2>
     <ul>
       <li>
