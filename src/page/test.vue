@@ -1,44 +1,69 @@
 <template lang="pug">
   div
     .button-box
-      input(v-model="loadingText")
-      .button(v-on:click="loadingOn") Loading On
-      .button(v-on:click="loadingOff") Loading Off
-      input(v-model="toastText")
-      .button(v-on:click="addSuccessToast") Baking Toast S
-      .button(v-on:click="addInfoToast") Baking Toast I
-      .button(v-on:click="addWarningToast") Baking Toast E
-    loading-message(ref="loading")
-    vue-toast(ref="toast")
+      input(placeholder="title message" v-model="titleMessage")
+      input(placeholder="text message" v-model="textMessage")
+      input(placeholder="positive message" v-model="positiveMessage")
+      input(placeholder="negative message" v-model="negativeMessage")
+      .button.dialog-button(v-on:click="dialogOn") dialog On
+    .button-box
+      input(placeholder="loading message" v-model="loadingMessage")
+      .button.loading-button(v-on:click="loadingOn") Loading On
+      .button.loading-button(v-on:click="loadingOff") Loading Off
+    .button-box
+      input(placeholder="toast message" v-model="toastMessage")
+      .button.toast-button(v-on:click="addSuccessToast") Baking Toast Success
+      .button.toast-button(v-on:click="addInfoToast") Baking Toast Information
+      .button.toast-button(v-on:click="addWarningToast") Baking Toast Warning
+
 </template>
 
 <script>
 
 export default {
   name: 'test',
-  computed: {
-  },
+  computed: {},
   data() {
     return {
-      loadingText: 'loading Text',
-      toastText: 'toast Text'
+      titleMessage: '타이틀 메세지를 입력하세요',
+      textMessage: '텍스트 메세지를 입력하세요',
+      positiveMessage: '예',
+      negativeMessage: '아니오',
+      loadingMessage: '로딩중입니다.',
+      toastMessage: '메세지를 띄웁니다.'
     };
   },
   methods: {
     loadingOn() {
-      this.$refs.loading.openProgress(this.text);
+      const options = { message: this.loadingMessage };
+      this.$loading.openProgress(options);
     },
     loadingOff() {
-      this.$refs.loading.closeProgress();
+      this.$loading.closeProgress();
     },
     addSuccessToast() {
-      this.$refs.toast.success(this.toastText);
+      this.$toast.success(this.toastMessage);
     },
     addInfoToast() {
-      this.$refs.toast.info(this.toastText);
+      this.$toast.info(this.toastMessage);
     },
     addWarningToast() {
-      this.$refs.toast.warning(this.toastText);
+      this.$toast.warning(this.toastMessage);
+    },
+    dialogOn() {
+      const options = {
+        title: this.titleMessage,
+        text: this.textMessage,
+        positive: this.positiveMessage,
+        negative: this.negativeMessage,
+        positiveOn: () => {
+          console.log('positive');
+        },
+        negativeOn: () => {
+          console.log('negative');
+        }
+      };
+      this.$dialog.open(options);
     }
   }
 };
@@ -58,6 +83,24 @@ body
 div
   width: 100%
 
+.dialog-button
+  background: #65aae2
+  &:active
+    color: #fff
+    background: #4485CE
+
+.loading-button
+  background: #ffd84d
+  &:active
+    background: #FFB516
+    color: white
+
+.toast-button
+  background: #b6de60
+  &:active
+    background: #8AC74D
+    color: white
+
 .content-box
   width: 100%
   height: calc(100vh - 50px)
@@ -70,16 +113,21 @@ div
   padding: 16px
 
   .button
+    flex: 1
     cursor: pointer
     height: 30px
     border-radius: 8px
-    background-color: #00acc1
     line-height: 14px
     padding: 8px
     margin: 0 16px
-    &:active
-      background: #0085c1
-      color: white
+    color: #777
+  input
+    flex: 1
+    margin: 0 16px
+    height: 30px
+    outline: none
+    border: none
+    border-bottom: 1px solid #ccc
 
 .loading-box
   margin: 0 16px

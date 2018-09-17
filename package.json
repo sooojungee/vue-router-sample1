@@ -17,7 +17,9 @@
     "github-deploy": "npm run build; push-dir --dir=dist --branch=gh-pages --cleanup"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "cors": "^2.8.4",
+    "lodash": "latest",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"

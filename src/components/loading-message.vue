@@ -18,18 +18,17 @@ export default {
   name: 'loading-message',
   data() {
     return {
-      visible: true
+      visible: false,
+      text: ''
     };
   },
-  props: {
-    text: {
-      type: String,
-      default: 'loading Text'
-    }
-  },
   methods: {
-    openProgress(message) {
-      this.text = message;
+    /**
+     * @param {Object} options
+     * @param {String} options.message
+     */
+    openProgress(options) {
+      this.text = options.message;
       this.visible = true;
     },
     closeProgress() {
@@ -52,11 +51,12 @@ body {
   width: 100%;
   line-height: 1;
   top: 50%;
-  text-align: center
+  text-align: center;
+  color: #999;
 }
 
 #load {
-  z-index: 10;
+  z-index: 100;
   position: absolute;
   width: 600px;
   height: 36px;
@@ -69,6 +69,7 @@ body {
   -ms-user-select: none;
   user-select: none;
   cursor: default;
+  color: #444;
 }
 
 #load div {
