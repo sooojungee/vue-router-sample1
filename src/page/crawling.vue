@@ -10,20 +10,28 @@
       .sub-input-box(v-if="seen")
         input(placeholder="검색어 입력")
     .text-box
-      .text(v-html="post")
+      .content(v-for="p in posts")
+        .title {{p.type}}
+        .text {{p.children}}
     .tag-box
+      .content(v-for="t in tags")
+        .title {{t.type}}
+        a.text(v-bind:href= "t.src") {{t.name}}
 
 </template>
 
 <script>
+
+import * as controller from './crawlingControl';
 
 export default {
   name: 'crawling',
   data() {
     return {
       seen: false,
-      post: '',
-      siteUrl: ''
+      siteUrl: '',
+      posts: [],
+      tags: []
     };
   },
   methods: {
@@ -32,8 +40,31 @@ export default {
     },
     async searchTerm() {
       const baseURI = 'http://127.0.0.1:4000/crawling';
-      const url = await this.$http.get(`${baseURI}/${encodeURIComponent(this.siteUrl)}`);
-      this.post = url.data;
+      const urlData = await this.$http.get(`${baseURI}/${encodeURIComponent(this.siteUrl)}`);
+      if (urlData.data.type) {
+        console.log('t', urlData.data);
+        const html = urlData.data.data.split('<body')[1].split('</body')[0];
+        this.divideTag(controller.findText(html, this.siteUrl));
+      } else {
+        console.log('f', urlData.data);
+        this.posts = [{
+          type: 'error',
+          children: `${urlData.data}`
+        }];
+      }
+    },
+    divideTag(result) {
+      const data = [];
+      const tags = [];
+      for (let i = 0; i < result.length; i += 1) {
+        if (result[i].text) {
+          data.push(result[i]);
+        } else {
+          tags.push(result[i]);
+        }
+      }
+      this.posts = data;
+      this.tags = tags;
     }
   }
 };
@@ -90,17 +121,31 @@ export default {
 
 .text-box
   width: 100%
-  height: 400px
+  height: 360px
+  border: 4px solid #fff
   border-bottom: 1px solid #ccc
-  padding: 16px 32px
+  padding: 16px
   overflow-y: auto
+
+.content
+  display: flex
+  min-height: 40px
+  padding: 16px 8px
+  .title
+    color: #0d47a1
+    min-width: 80px
+    text-align: left
   .text
+    flex: 1
+    text-align: left
+    padding: 0 8px
     color: #333
 
 .tag-box
   width: 100%
-  height: calc(100vh - 530px)
+  border: 4px solid #fff
+  height: calc(100vh - 490px)
   overflow-y: auto
-  padding: 16px 32px
+  padding: 16px
 
 </style>
