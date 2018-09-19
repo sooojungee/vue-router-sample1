@@ -15,14 +15,18 @@
       .button.toast-button(v-on:click="addSuccessToast") Baking Toast Success
       .button.toast-button(v-on:click="addInfoToast") Baking Toast Information
       .button.toast-button(v-on:click="addWarningToast") Baking Toast Warning
+    .button-box
+      .text {{numberToCommaString(10000)}}
+
 
 </template>
 
 <script>
+import MixinBase from '../components/mixin-base';
 
 export default {
   name: 'test',
-  computed: {},
+  mixins: [MixinBase],
   data() {
     return {
       titleMessage: '타이틀 메세지를 입력하세요',
@@ -30,7 +34,8 @@ export default {
       positiveMessage: '예',
       negativeMessage: '아니오',
       loadingMessage: '로딩중입니다.',
-      toastMessage: '메세지를 띄웁니다.'
+      toastMessage: '메세지를 띄웁니다.',
+      contents: []
     };
   },
   methods: {

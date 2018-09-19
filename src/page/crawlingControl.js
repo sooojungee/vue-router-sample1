@@ -2,17 +2,31 @@ const cheerio = require('cheerio');
 const _ = require('lodash');
 
 let $ = null;
-const result = [];
+let result = [];
 let site = null;
 
 const findChildren = (child) => {
   const children = $(child).children().toArray();
-  if (children.length > 0) {
+
+  if (children.length <= 0) {
+    if (children.length === 0) {
+      result.push(child);
+    }
+  } else {
+    if ($(child).text().length > 0) {
+      const extraChild = child;
+      for (let i = 0; i < children.length; i += 1) {
+        if (children[i].type !== 'text') {
+          delete $(extraChild).children[i];
+          extraChild.newText = $(extraChild).text();
+          // console.log('tt', $(extraChild).text());
+        }
+      }
+      result.push(extraChild);
+    }
     for (let i = 0; i < children.length; i += 1) {
       findChildren(children[i]);
     }
-  } else if (children.length === 0) {
-    result.push(child);
   }
 };
 
@@ -41,6 +55,7 @@ const addHttp = (attribute) => {
 
 module.exports = {
   findText(post, url) {
+    result = [];
     site = url;
     const template = `<body${post}</body>`;
     $ = cheerio.load(template);
@@ -53,7 +68,18 @@ module.exports = {
     for (let i = 0; i < result.length; i += 1) {
       let thisName = '';
       if (result[i].children.length > 0) {
-        thisName = result[i].children[0].data.toString();
+        try {
+          let newText = '';
+          // console.log(result[i].children.length, 'aa', result[i].children[0].data.toString());
+          for (let j = 0; j < result[i].children.length; j += 1) {
+            if (result[i].children[j].type !== 'text') {
+              newText += result[i].children[j].children[0].data.toString();
+            } else {
+              newText += result[i].children[j].data.toString();
+            }
+          }
+          thisName = newText;
+        } catch (e) {}
       }
       if (result[i].name === 'a') {
         item.push({
