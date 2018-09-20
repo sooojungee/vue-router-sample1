@@ -2,33 +2,7 @@ const cheerio = require('cheerio');
 const _ = require('lodash');
 
 let $ = null;
-let result = [];
 let site = null;
-
-const findChildren = (child) => {
-  const children = $(child).children().toArray();
-
-  if (children.length <= 0) {
-    if (children.length === 0) {
-      result.push(child);
-    }
-  } else {
-    if ($(child).text().length > 0) {
-      const extraChild = child;
-      for (let i = 0; i < children.length; i += 1) {
-        if (children[i].type !== 'text') {
-          delete $(extraChild).children[i];
-          extraChild.newText = $(extraChild).text();
-          // console.log('tt', $(extraChild).text());
-        }
-      }
-      result.push(extraChild);
-    }
-    for (let i = 0; i < children.length; i += 1) {
-      findChildren(children[i]);
-    }
-  }
-};
 
 const addHttp = (attribute) => {
   let attrSite = null;
@@ -55,22 +29,27 @@ const addHttp = (attribute) => {
 
 module.exports = {
   findText(post, url) {
-    result = [];
     site = url;
     const template = `<body${post}</body>`;
     $ = cheerio.load(template);
-    const test = $('body').children().toArray();
-    for (let i = 0; i < test.length; i += 1) {
-      findChildren(test[i]);
+    const result = $('*').children().toArray();
+
+    for (let i = 0; i < result.length; i += 1) {
+      if (result[i].children.length > 0) {
+        result[i].extraText = $(result[i]).clone().children().remove()
+          .end()
+          .text();
+      }
     }
 
     const item = [];
     for (let i = 0; i < result.length; i += 1) {
       let thisName = '';
       if (result[i].children.length > 0) {
-        try {
+        if (!_.isNil(result[i].extraText)) {
+          thisName = result[i].extraText;
+        } else {
           let newText = '';
-          // console.log(result[i].children.length, 'aa', result[i].children[0].data.toString());
           for (let j = 0; j < result[i].children.length; j += 1) {
             if (result[i].children[j].type !== 'text') {
               newText += result[i].children[j].children[0].data.toString();
@@ -79,7 +58,7 @@ module.exports = {
             }
           }
           thisName = newText;
-        } catch (e) {}
+        }
       }
       if (result[i].name === 'a') {
         item.push({
@@ -125,6 +104,7 @@ module.exports = {
         });
       }
     }
+
     return item;
   }
 };

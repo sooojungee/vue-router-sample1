@@ -16,13 +16,14 @@
       .button.toast-button(v-on:click="addInfoToast") Baking Toast Information
       .button.toast-button(v-on:click="addWarningToast") Baking Toast Warning
     .button-box
-      .text {{numberToCommaString(10000)}}
+
 
 
 </template>
 
 <script>
 import MixinBase from '../components/mixin-base';
+// import * as Util from '../util';
 
 export default {
   name: 'test',

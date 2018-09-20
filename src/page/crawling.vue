@@ -11,7 +11,8 @@
     .text-box
       transition(name="slow-down")
       .sub-input-box(v-if="seen")
-        .search-button(v-for="d in dataTypes" @click="selectData(d)") {{d.type}}
+        .search-button(v-for="d in dataTypes" @click="selectData(d)"
+        v-bind:class="{red : d.selected, gray : nonSelected}") {{d.type}}
         .reset-button.i.fas.fa-redo-alt(@click="reset")
       .content-box
         .content(v-for="p in posts")
@@ -20,7 +21,8 @@
     .tag-box
       transition(name="slow-down")
       .sub-input-box(v-if="seen")
-        .search-button(v-for="t in tagTypes" @click="selectTag(t)") {{t.type}}
+        .search-button(v-for="t in tagTypes" @click="selectTag(t)"
+        :class="{red : t.selected}") {{t.type}}
         .reset-button.i.fas.fa-redo-alt(@click="reset")
       .content-box
         .content(v-for="t in tags")
@@ -45,21 +47,35 @@ export default {
       tagTypes: [],
       result: [],
       selectedTag: '',
-      contentSeen: false
+      contentSeen: false,
+      nonSelected: true
     };
   },
   methods: {
     active() {
       this.seen = !this.seen;
     },
-    selectData(tagName) {
-      this.searchData(tagName);
-      // this.$refs.tagName.color = 'red';
+    selectData(data) {
+      for (let i = 0; i < this.dataTypes.length; i += 1) {
+        this.dataTypes[i].selected = false;
+      }
+      data.selected = true;
+      this.searchData(data.type);
     },
-    selectTag(tagName) {
-      this.searchTag(tagName);
+    selectTag(data) {
+      for (let i = 0; i < this.tagTypes.length; i += 1) {
+        this.tagTypes[i].selected = false;
+      }
+      data.selected = true;
+      this.searchTag(data.type);
     },
     reset() {
+      for (let i = 0; i < this.dataTypes.length; i += 1) {
+        this.dataTypes[i].selected = false;
+      }
+      for (let i = 0; i < this.tagTypes.length; i += 1) {
+        this.tagTypes[i].selected = false;
+      }
       this.divideTag(this.result);
     },
     searchData(tagName) {
@@ -106,7 +122,7 @@ export default {
       const tagsArr = [];
       for (let i = 0; i < result.length; i += 1) {
         if (result[i].text) {
-          if (result[i].children !== '') {
+          if (result[i].children !== '' && result[i].children !== /\n/) {
             dataArr.push(result[i]);
           }
         } else {
@@ -122,29 +138,33 @@ export default {
     },
     search(result) {
       this.types = [];
-      const datatypeArr = [];
-      const tagtypeArr = [];
+      const dataTypeArr = [];
+      const dataArr = [];
+      const tagTypeArr = [];
+      const tagArr = [];
       for (let i = 0; i < result.length; i += 1) {
         if (result[i].text) {
-          if (datatypeArr.indexOf(result[i].type) === -1) {
+          if (dataArr.indexOf(result[i].type) === -1) {
+            dataArr.push(result[i].type);
             const typeObject = ({
               selected: false,
               type: result[i].type
             });
-            datatypeArr.push(typeObject);
+            dataTypeArr.push(typeObject);
           }
         } else {
-          if (tagtypeArr.indexOf(result[i].type) === -1) {
+          if (tagArr.indexOf(result[i].type) === -1) {
+            tagArr.push(result[i].type);
             const typeObject = ({
               selected: false,
               type: result[i].type
             });
-            tagtypeArr.push(typeObject);
+            tagTypeArr.push(typeObject);
           }
         }
       }
-      this.dataTypes = datatypeArr;
-      this.tagTypes = tagtypeArr;
+      this.dataTypes = dataTypeArr;
+      this.tagTypes = tagTypeArr;
     }
   }
 };
@@ -245,7 +265,7 @@ export default {
 
 .content
   display: flex
-  min-height: 30px
+  min-height: 26px
   padding: 16px 8px
   .title
     color: #0d47a1
@@ -264,4 +284,8 @@ export default {
   overflow-y: auto
   padding: 0 16px 16px
 
+.red
+  color: #ff4f52 !important
+.gray
+  color: #999
 </style>
