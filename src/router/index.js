@@ -18,7 +18,7 @@ export default new Router({
     {
       path: '/test',
       name: 'test',
-      component: test.default
+      component: test
     },
     {
       path: '/crawling',
