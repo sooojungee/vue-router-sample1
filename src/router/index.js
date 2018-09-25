@@ -4,6 +4,7 @@ import Hello from '../page/Hello';
 import test from '../page/test';
 import crawling from '../page/crawling';
 import v from '../page/v';
+import thetheChat from '../page/thetheChat';
 
 Vue.use(Router);
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/v',
       name: 'v',
       component: v
+    },
+    {
+      path: '/thetheChat',
+      name: 'thetheChat',
+      component: thetheChat
     }
   ]
 });
