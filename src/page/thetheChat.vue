@@ -21,12 +21,15 @@
           .i.far.fa-star
           .i.fas.fa-lock
           .header-text class
-        .main-chatting
+        .main-chatting(ref="mainChatting")
+          vue-chatting(v-for="chat in chatting" v-bind="chat")
+          //채팅
         .main-input
           .main-input-contents
             .input-box
               .i.far.fa-grin
-              textarea(@keyup="sendMessage" placeholder='메세지' v-model="message")
+              textarea(ref="area" @keydown="sendMessage"
+              placeholder='메세지' v-model="message")
             .content-box
       .right-part
         .icon.i.fas.fa-info-circle
@@ -41,19 +44,66 @@
 </template>
 
 <script>
-import * as textController from './chat-textarea';
+
+import * as _ from 'lodash';
 
 export default {
   name: 'thetheChat',
   data() {
     return {
-      message: ''
+      message: '',
+      chatting: []
     };
   },
   methods: {
-    sendMessage() {
-      console.log(this.message);
+    sendMessage: _.debounce(function (e) {
+      if (e.keyCode === 13 && !e.shiftKey) {
+        if (this.message === '<br>' || this.message === '') {
+          return;
+        }
+        const currentOptions = {
+          message: this.message,
+          name: 'soojung.lee',
+          // date: this.checkDate(new Date())
+          date: new Date().getTime()
+        };
+        this.chatting.push({
+          main: this.checkContent(currentOptions),
+          options: currentOptions
+        });
+        this.message = '';
+      }
+      // this.textHeight();
+    }, 10),
+    checkDate(time) {
+      return `${time.getHours() > 12 ? '오후' : '오전'} ${time.getHours() % 12}:${time.getMinutes()}`;
+    },
+    checkContent(currentOptions) {
+      // 앞에꺼보다 이름이 다르면 무조건 트루
+      // 앞에꺼랑 이름 같은데 시간 다르면 트루
+      // 앞에꺼랑 이름 같은데 시간 같으면 펄스
+      // 앞에 아무것도 없으면 트루
+      if (this.chatting.length === 0) {
+        return true;
+      } else if (this.chatting[this.chatting.length - 1].options.name !== currentOptions.name) {
+        return true;
+      } else if (this.chatting[this.chatting.length - 1].options.name === currentOptions.name
+        && new Date(this.chatting[this.chatting.length - 1].options.date).getMinutes()
+        !== new Date(currentOptions.date).getMinutes()) {
+        return true;
+      }
+      return false;
+    },
+    textHeight() {
+      const textEle = this.$refs.area;
+      textEle.style.height = 'auto';
+      const textHeight = textEle.scrollHeight;
+      textEle.style.height = `${textHeight}px`;
     }
+  },
+  updated() {
+    this.textHeight();
+    this.$refs.mainChatting.scrollTop = this.$refs.mainChatting.scrollHeight;
   }
 };
 </script>
@@ -205,13 +255,14 @@ div
     width: 100%
     flex: 1
     overflow-y: auto
-    padding: 16px 0
+    padding: 8px 0
   .main-input
     width: 100%
     border-top: 1px solid #ddd
     padding: 8px 16px 16px
     max-height: 180px
     $max-height: 164px
+    height: auto
     display: flex
     .main-input-contents
       width: 100%
@@ -219,11 +270,12 @@ div
       border: 1px solid #ddd
       border-radius: 4px
       display: flex
+      height: 100%
       .input-box
+        height: 100%
         flex: 1
         border-right: 1px solid #dddddd
         position: relative
-        max-height: $max-height
         .i
           width: 16px
           height: 16px
@@ -234,7 +286,7 @@ div
         textarea
           resize: none
           width: 100%
-          height: 36px
+          min-height: 36px
           max-height: 150px
           padding-left: 32px
           padding-top: 8px
@@ -247,6 +299,7 @@ div
         width: 80px
         height: 32px
         max-height: $max-height
+
 .right-part
   width: 36px
   height: 100%

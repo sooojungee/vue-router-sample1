@@ -104,6 +104,7 @@ export default {
       this.$loading.openProgress('로딩중입니다.');
       const baseURI = 'http://127.0.0.1:4000/crawling';
       const urlData = await this.$http.get(`${baseURI}/${encodeURIComponent(this.siteUrl)}`);
+      console.log(urlData);
       if (urlData.data.type) {
         const html = urlData.data.data.split('<body')[1].split('</body')[0];
         this.result = controller.findText(html, this.siteUrl);

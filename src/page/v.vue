@@ -12,6 +12,17 @@
       .text lastName: {{ lastName }}
       button(@click="change") click
       .text fullName: {{ fullName }}
+    .content
+      .test(:class="classObject") skdufh
+    .content
+      .static(:class="{active: isActive, 'text-danger': hasError}") aaa
+    .content
+      .style-test(:style="{ color: activeColor, fontSize: fontSize + 'px'}") 여기야여기
+      .style-test(:style="[styleObject, styleSetting]") 안녕하세요
+      div(v-bind:style=" 'display:' ['-webkit-box', '-ms-flexbox', 'flex'] ") asdfasdfasdf
+      div(:style="{transform: 'rotate(20deg)'}") oooo
+
+
 </template>
 
 <script>
@@ -26,7 +37,16 @@ export default {
       answer: '질문을 하기 전까지는 대답할 수 없습니다.',
       firstName: '',
       lastName: '',
-      changeName: ''
+      changeName: '',
+      isActive: true,
+      hasError: true,
+      activeColor: 'red',
+      fontSize: 30,
+      styleObject: {
+        color: 'blue',
+        fontSize: '13px',
+        cursor: 'pointer'
+      }
     };
   },
   watch: {
@@ -45,6 +65,17 @@ export default {
         this.firstName = names[0];
         this.lastName = names[names.length - 1];
       }
+    },
+    classObject() {
+      return {
+        active: this.isActive && !this.error,
+        'text-danger': this.error && this.error.type === 'fatal'
+      };
+    },
+    styleSetting() {
+      return {
+        border: `1px solid ${this.styleObject.color}`
+      };
     }
   },
   methods: {

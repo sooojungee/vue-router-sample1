@@ -15,6 +15,7 @@ import Loading from './components/loading-message';
 import Toast from './components/toast-message';
 import VueToast from './components/vue-toast';
 import Dialog from './components/vue-dialog';
+import Chatting from './components/vue-chatting';
 
 import { store } from './vuex/store';
 
@@ -23,6 +24,7 @@ Vue.component(Loading.name, Loading);
 Vue.component(Toast.name, Toast);
 Vue.component(VueToast.name, VueToast);
 Vue.component(Dialog.name, Dialog);
+Vue.component(Chatting.name, Chatting);
 
 Vue.prototype.$http = axios;
 
@@ -46,15 +48,13 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100vh;
+  /*height: 100vh;*/
 }
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  /*margin-top: 60px;*/
 }
 </style>
