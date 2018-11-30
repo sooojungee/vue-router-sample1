@@ -1,0 +1,24 @@
+@font-face {
+	font-family: "iconfont";
+	src: url("iconfont.eot?6da22850fee6600bc4de577550aa8193?#iefix") format("embedded-opentype"),
+url("iconfont.woff2?6da22850fee6600bc4de577550aa8193") format("woff2"),
+url("iconfont.woff?6da22850fee6600bc4de577550aa8193") format("woff");
+}
+
+.icon-font {
+	line-height: 1;
+}
+
+.icon-font:before {
+	font-family: iconfont !important;
+	font-style: normal;
+	font-weight: normal !important;
+	vertical-align: top;
+}
+
+.icon-font-baseline-autorenew-24px:before {
+	content: "\f101";
+}
+.icon-font-baseline-brightness_auto-24px:before {
+	content: "\f102";
+}

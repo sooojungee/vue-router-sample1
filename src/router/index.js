@@ -5,6 +5,10 @@ import test from '../page/test';
 import crawling from '../page/crawling';
 import v from '../page/v';
 import thetheChat from '../page/thetheChat';
+import bricks from '../page/test/bricks/bricks';
+import hello2 from '../page/Hello2';
+import vv from '../page/vv';
+
 
 Vue.use(Router);
 
@@ -35,6 +39,21 @@ export default new Router({
       path: '/thetheChat',
       name: 'thetheChat',
       component: thetheChat
+    },
+    {
+      path: '/bricks',
+      name: 'bricks',
+      component: bricks
+    },
+    {
+      path: '/hello2',
+      name: 'hello2',
+      component: hello2
+    },
+    {
+      path: '/vv',
+      name: 'vv',
+      component: vv
     }
   ]
 });

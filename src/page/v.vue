@@ -21,14 +21,84 @@
       .style-test(:style="[styleObject, styleSetting]") 안녕하세요
       div(v-bind:style=" 'display:' ['-webkit-box', '-ms-flexbox', 'flex'] ") asdfasdfasdf
       div(:style="{transform: 'rotate(20deg)'}") oooo
-
-
+      .icon-font.icon-font-baseline-autorenew-24px
+    .content
+      .test(@click="click1") a
+        .test(@click.self="click2") s
+          .test(@click.shift="click3") d
+    .content
+      .test(@click="evt => clickGroupTag(evt)") asdfasdf
+      input(@click="evt => clickGroupTag(evt)")
+    .content
+      input(type="radio", id="one", value="One", v-model="picked")
+      label(for="one") One
+      input(type="radio", id="two", value="Two", v-model="picked")
+      label(for="two") Two
+      span 선택: {{ picked }}
+    .content
+      select(v-model="testText")
+        option(disabled value="") Select One
+        option A
+        option B
+        options C
+      span 선택함 {{ testText }}
+    .content
+      input(v-model.number="age", type="text" @keyup="changes")
+    .content
+      test-component(:message="100")
+    .content
+      child-component
+        h1(slot="header") 하이하이
+    .content
+      .add(@click="addCookie") 추가하기
+      .get(@click="getCookie") 가져오기
+      .delete(@click="deleteCookie") 삭제하기
+    .content
+      .test1(v-test="{top: '40', right: '60'}") 사용자 정의 디렉티브 테스트
+      .test2(v-test2="{ color: 'yellow'}") 사용자 정의 디렉티브 테스트
+    .content
+      router-link.test(:to="'vue-router-sample1'") vue-router-sample1 link
+      router-link.test(:to="'vue-router-sample1'" replace) vue-router-sample1 replace
+      .test(@click="routerGo") <  라우터 back  >
 </template>
 
 <script>
+import Vue from 'vue';
 import * as _ from 'lodash';
 import axios from 'axios';
 
+Vue.directive('test', {
+  bind(el, binding) {
+    el.style.position = 'fixed';
+    el.style.top = `${binding.value.top}px`;
+    el.style.right = `${binding.value.right}px`;
+    console.log('elel', el);
+  }
+});
+
+Vue.directive('test2', (el, binding) => {
+  el.style.backgroundColor = binding.value.color;
+});
+
+Vue.component('test-component', {
+  template: '<span> {{message}} </span>',
+  props: {
+    message: {
+      type: Object,
+      defult: function () {
+        return {
+          message: 'hello'
+        };
+      }
+    }
+  }
+});
+Vue.component('child-component', {
+  template: `<div class="container">
+<header><slot name="header"></slot></header>
+</div>`
+
+});
 export default {
   name: 'v',
   data() {
@@ -46,7 +116,10 @@ export default {
         color: 'blue',
         fontSize: '13px',
         cursor: 'pointer'
-      }
+      },
+      testText: '',
+      picked: [],
+      age: 0
     };
   },
   watch: {
@@ -79,6 +152,46 @@ export default {
     }
   },
   methods: {
+    routerGo() {
+      this.$router.go(-1);
+    },
+    addCookie() {
+      const user = {
+        name: 'soojung',
+        uid: 'skdufhskdufh',
+        email: 'skdufh@google.com'
+      };
+      const c = this.$cookie.set('test', user, 1);
+      console.log('add', c);
+    },
+    getCookie() {
+      console.log(this.$cookie.get('test'));
+    },
+    deleteCookie() {
+      const c = this.$cookie.delete('test');
+      console.log('delete', c);
+    },
+    changes() {
+      console.log(typeof this.age);
+    },
+    testTextMethods() {
+      console.log(this.testText);
+    },
+    clickGroupTag(e) {
+      console.log(e);
+    },
+    asdf() {
+      console.log('aa');
+    },
+    click1() {
+      console.log('1');
+    },
+    click2() {
+      console.log('2');
+    },
+    click3() {
+      console.log('3');
+    },
     change() {
       console.log('1', this.fullName, typeof this.fullName);
       this.fullName = this.changeName;

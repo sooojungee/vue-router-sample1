@@ -1,5 +1,13 @@
-<template>
-  <div class="hello">
+<template lang="pug">
+  .hello
+    .content
+      h1 hello
+      h3 hi {{parentCount}} hi
+      h3 {{$store.getters.name}}
+      h3 {{$store.getters.age}}
+      h3(@click="pluginTest") test {{$store.getters.testCount }} tttt
+      button(@click="decreaseAge") decrease age
+      router-link(to="/hello2") Go To HELLO
     <h1>Welcome to Soojungee Vue Template</h1>
     <h4>vuex store</h4>
     <h3 v-html="$store.getters.getCount"></h3>
@@ -65,12 +73,12 @@
 </template>
 
 <script>
-
+import { mapGetters } from 'vuex';
 import { store } from '../vuex/store';
 
 export default {
-  name: 'HelloWorld',
-  store,
+  name: 'store',
+  store, // vue 에서 현재 store을 사용하겠다.
   data() {
     return {
       msg: 'Welcome to Hanu Vue Template',
@@ -87,18 +95,31 @@ export default {
         left: `${this.posX}px`,
         top: `${this.posY}px`
       };
-    }
+    },
+    ...mapGetters({
+      parentCount: 'age'
+    })
   },
   methods: {
+    pluginTest() {
+      this.$store.commit('test');
+    },
     increment() {
       this.$store.commit('increment', { inc: 1 });
     },
     decrement() {
       this.$store.commit('increment', { inc: -1 });
     },
+    decreaseAge() {
+      this.$store.commit('changeAge',
+        this.$store.getters.age - 1);
+    },
     async mousemoved() {
       console.log(this);
     }
+  },
+  mounted() {
+    this.$store.commit('changePage', 'store');
   }
 };
 </script>

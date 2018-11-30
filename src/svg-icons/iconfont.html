@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>iconfont</title>
+	<style>
+		body {
+			font-family: sans-serif;
+			margin: 0;
+			padding: 10px 20px;
+		}
+
+		.preview {
+			line-height: 2em;
+		}
+
+		.preview__icon {
+			display: inline-block;
+			width: 32px;
+			text-align: center;
+		}
+
+		.icon {
+			display: inline-block;
+			font-size: 16px;
+		}
+
+		@font-face {
+	font-family: "iconfont";
+	src: url("iconfont.eot?3d324f1ca3b1a7b9bd0c78c39863f2a4?#iefix") format("embedded-opentype"),
+url("iconfont.woff2?3d324f1ca3b1a7b9bd0c78c39863f2a4") format("woff2"),
+url("iconfont.woff?3d324f1ca3b1a7b9bd0c78c39863f2a4") format("woff");
+}
+
+.icon-font {
+	line-height: 1;
+}
+
+.icon-font:before {
+	font-family: iconfont !important;
+	font-style: normal;
+	font-weight: normal !important;
+	vertical-align: top;
+}
+
+.icon-font-baseline-autorenew-24px:before {
+	content: "\f101";
+}
+.icon-font-baseline-brightness_auto-24px:before {
+	content: "\f102";
+}
+
+	</style>
+</head>
+<body>
+	<h1>iconfont</h1>
+	<div class="preview">
+		<span class="preview__icon">
+			<span class=" icon-font-baseline-autorenew-24px"></span>
+		</span>
+		<span>baseline-autorenew-24px</span>
+	</div>
+	<div class="preview">
+		<span class="preview__icon">
+			<span class=" icon-font-baseline-brightness_auto-24px"></span>
+		</span>
+		<span>baseline-brightness_auto-24px</span>
+	</div>
+</body>
+</html>

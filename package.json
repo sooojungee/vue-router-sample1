@@ -5,6 +5,7 @@
   "author": "sooojungee@gmail.com",
   "private": true,
   "scripts": {
+    "build-icons": "node ./build/webfont.generator.js",
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
@@ -18,13 +19,18 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "bricks.js": "^1.8.0",
     "cheerio": "^1.0.0-rc.2",
     "cors": "^2.8.4",
+    "fs": "0.0.1-security",
     "jquery": "^3.3.1",
     "lodash": "^4.17.11",
+    "soojung-first-plugin": "0.0.0",
     "vue": "^2.5.16",
+    "vue-cookie": "^1.1.4",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "webfonts-generator": "^0.4.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
